@@ -3,8 +3,6 @@ import { Input } from '@chakra-ui/input';
 import { Box, Container, HStack, List, ListItem } from '@chakra-ui/layout';
 import React, { FormEvent } from 'react';
 
-import { Navbar } from '../components/Navbar';
-
 interface ITodoAppProps {}
 
 const TodoApp: React.FC<ITodoAppProps> = () => {
@@ -26,7 +24,6 @@ const TodoApp: React.FC<ITodoAppProps> = () => {
 
 	return (
 		<Box className="TodoApp">
-			<Navbar headingText="next-chakra-starter" />
 			<Container py={8}>
 				<HStack as="form" onSubmit={handleFormSubmit}>
 					<Input
