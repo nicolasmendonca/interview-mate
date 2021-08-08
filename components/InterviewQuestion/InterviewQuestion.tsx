@@ -21,6 +21,7 @@ interface InterviewQuestionProps {
 	question: string | null;
 	score: Score;
 	onScoreSubmit: (score: Score) => void;
+	onRemove: () => void;
 }
 
 const parseScore = (score: Score) => ([null, undefined].includes(score) ? '' : `${score}`);

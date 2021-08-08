@@ -29,7 +29,7 @@ const catalogQuestions = [
 	{
 		id: 1,
 		isExpanded: false,
-		question: 'Compare `useState` vs `useReducer`',
+		question: ['```jsx', '<Component props={true} />', '```'].join('\n'),
 	},
 	{
 		id: 2,
@@ -100,6 +100,7 @@ const InterviewMate: React.FC = () => {
 							<InterviewQuestion
 								question={interviewQuestion.question}
 								score={interviewQuestion.score}
+								onRemove={noop}
 								onScoreSubmit={noop}
 							/>
 						</BoxWithMargin>
