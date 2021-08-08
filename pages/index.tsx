@@ -1,63 +1,152 @@
-import { Button } from '@chakra-ui/button';
-import { Input } from '@chakra-ui/input';
-import { Box, Container, HStack, List, ListItem } from '@chakra-ui/layout';
-import React, { FormEvent } from 'react';
+import {
+	Box,
+	Button,
+	ChakraProps,
+	Divider,
+	Editable,
+	EditableInput,
+	EditablePreview,
+	Heading,
+	HStack,
+	Icon,
+	IconButton,
+	Input,
+	InputGroup,
+	InputLeftElement,
+	InputRightAddon,
+	Text,
+} from '@chakra-ui/react';
+import React from 'react';
+import { FiChevronDown, FiPlus, FiSearch, FiEdit, FiTrash } from 'react-icons/fi';
+import { GrDrag } from 'react-icons/gr';
 
-interface ITodoAppProps {}
+const HalfSection: React.FC<ChakraProps> = (props) => <Box height="100vh" width="50%" {...props} />;
+const BoxWithPadding: React.FC<ChakraProps> = (props) => <Box p={6} {...props} />;
+const SpacedRoundedBox: React.FC<ChakraProps> = (props) => (
+	<Box borderRadius={5} p={6} {...props} />
+);
 
-const TodoApp: React.FC<ITodoAppProps> = () => {
-	const [inputValue, setInputValue] = React.useState<string>('');
-	const [todos, setTodos] = React.useState<string[]>([]);
-	const handleFormSubmit = (e: FormEvent) => {
-		e.preventDefault();
-		const newTodo = inputValue?.trim() || '';
+const CatalogQuestion: React.FC = () => (
+	<SpacedRoundedBox
+		bgColor="white"
+		borderColor="blue.200"
+		borderStyle="dashed"
+		borderWidth={2}
+		boxShadow="lg"
+	>
+		<HStack>
+			<IconButton
+				aria-label="expand"
+				fontSize="lg"
+				icon={<FiChevronDown aria-hidden="true" />}
+				variant="ghost"
+			/>
+			<Text width="full">Compare useState vs useReducer</Text>
+			<IconButton
+				aria-label="expand"
+				color="gray.300"
+				fontSize="lg"
+				icon={<FiPlus aria-hidden="true" />}
+				variant="ghost"
+			/>
+		</HStack>
+	</SpacedRoundedBox>
+);
 
-		if (!newTodo || todos.includes(newTodo)) return;
+const BoxWithMargin: React.FC<ChakraProps> = (props) => {
+	return <Box my={4} {...props} />;
+};
 
-		setTodos([...todos, newTodo]);
-		setInputValue('');
-	};
-
-	const handleRemoveTodo = (todoIndexToRemove) => {
-		setTodos(todos.filter((_, idx) => todoIndexToRemove !== idx));
-	};
-
+const InterviewQuestion: React.FC = () => {
 	return (
-		<Box className="TodoApp">
-			<Container py={8}>
-				<HStack as="form" onSubmit={handleFormSubmit}>
-					<Input
-						autoFocus={true}
-						name="todo"
-						placeholder="Add a new task!"
-						type="text"
-						value={inputValue}
-						onChange={(e) => setInputValue(e.target.value)}
-					/>
-					<Button colorScheme="purple" type="submit">
-						Save
-					</Button>
-				</HStack>
-
-				<List my={4}>
-					{todos.map((todo, todoIndex) => (
-						<ListItem key={todo} listStyleType="disc">
-							{todo}
-							<span> </span>
-							<Button
-								colorScheme="red"
-								size="xs"
-								variant="ghost"
-								onClick={() => handleRemoveTodo(todoIndex)}
-							>
-								X
-							</Button>
-						</ListItem>
-					))}
-				</List>
-			</Container>
-		</Box>
+		<SpacedRoundedBox
+			bgColor="white"
+			borderColor="blue.200"
+			borderStyle="dashed"
+			borderWidth={2}
+			boxShadow="lg"
+		>
+			<HStack>
+				<Icon aria-label="Sort" as={GrDrag} cursor="move" />
+				<Text width="full">Compare useState vs useReducer</Text>
+				<IconButton
+					aria-label="expand"
+					color="gray.300"
+					fontSize="lg"
+					icon={<FiTrash aria-hidden="true" />}
+					variant="ghost"
+				/>
+			</HStack>
+			<HStack gap={4} mt={4}>
+				<InputGroup justifyContent="flex-end">
+					<Input max={100} min={0} placeholder="100" type="number" width={20} />
+					<InputRightAddon>%</InputRightAddon>
+				</InputGroup>
+				<Button bgColor="brand" colorScheme="purple">
+					Set score
+				</Button>
+			</HStack>
+		</SpacedRoundedBox>
 	);
 };
 
-export default TodoApp;
+interface IInterviewMateProps {}
+
+const InterviewMate: React.FC<IInterviewMateProps> = () => {
+	return (
+		<HStack bgColor="bg" className="InterviewMate" spacing={0}>
+			<HalfSection bgGradient="linear-gradient(156.03deg, #644BFB 13.07%, #C3B9FF 100%);">
+				<BoxWithPadding minWidth="container.xs">
+					<InputGroup mt={10}>
+						<InputLeftElement pointerEvents="none">
+							<FiSearch aria-label="Search icon" color="white" />
+						</InputLeftElement>
+						<Input color="white" placeholder="Search questions..." variant="flushed" />
+					</InputGroup>
+
+					<Heading as="h2" color="white" mb={6} my={12}>
+						React
+					</Heading>
+					<BoxWithMargin>
+						<CatalogQuestion />
+					</BoxWithMargin>
+					<BoxWithMargin>
+						<CatalogQuestion />
+					</BoxWithMargin>
+					<BoxWithMargin>
+						<CatalogQuestion />
+					</BoxWithMargin>
+					<BoxWithMargin>
+						<CatalogQuestion />
+					</BoxWithMargin>
+				</BoxWithPadding>
+			</HalfSection>
+			<HalfSection>
+				<BoxWithPadding minWidth="container.xs">
+					<Editable defaultValue="React Mid. Developer" fontSize="4xl" fontWeight="bold">
+						<EditablePreview />
+						<EditableInput />
+						<IconButton aria-label="Edit" icon={<FiEdit aria-hidden={true} />} ml={4} />
+					</Editable>
+					<BoxWithMargin>
+						<Divider />
+					</BoxWithMargin>
+
+					<BoxWithMargin>
+						<InterviewQuestion />
+					</BoxWithMargin>
+
+					<BoxWithMargin>
+						<InterviewQuestion />
+					</BoxWithMargin>
+
+					<BoxWithMargin>
+						<InterviewQuestion />
+					</BoxWithMargin>
+				</BoxWithPadding>
+			</HalfSection>
+		</HStack>
+	);
+};
+
+export default InterviewMate;
