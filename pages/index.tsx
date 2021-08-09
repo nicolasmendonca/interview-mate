@@ -2,7 +2,7 @@
 import React from 'react';
 import {
 	Box,
-	ChakraProps,
+	chakra,
 	Divider,
 	Editable,
 	EditableInput,
@@ -20,9 +20,12 @@ import { InterviewQuestion } from '../components/InterviewQuestion';
 import { SearchQuestionCatalog } from '../components/SearchQuestionCatalog';
 import { BoxWithMargin, BoxWithPadding } from '../components/shared';
 
-const HalfSection: React.FC<ChakraProps> = (props) => (
-	<Box minHeight="100vh" width="50%" {...props} />
-);
+const HalfSection = chakra(Box, {
+	baseStyle: {
+		minHeight: '100vh',
+		width: '50%',
+	},
+});
 
 const noop = () => {};
 const catalogQuestions = [

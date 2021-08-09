@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, IconButton, HStack, Box } from '@chakra-ui/react';
-import { FiChevronDown, FiPlus } from 'react-icons/fi';
+import { FiChevronDown, FiChevronUp, FiPlus } from 'react-icons/fi';
 
 import { SpacedRoundedBox } from '../shared';
 import { QuestionMarkdown } from '../QuestionMarkdown';
@@ -9,11 +9,13 @@ export interface CatalogQuestionProps {
 	question: string;
 	isExpanded: boolean;
 	onAddToInterviewClick: () => void;
+	onExpandToggle: () => void;
 }
 
 export const CatalogQuestion: React.FC<CatalogQuestionProps> = ({
 	question,
 	onAddToInterviewClick,
+	onExpandToggle,
 	isExpanded,
 }) => {
 	return (
@@ -24,14 +26,15 @@ export const CatalogQuestion: React.FC<CatalogQuestionProps> = ({
 			borderWidth={2}
 			boxShadow="lg"
 		>
-			<HStack>
+			<HStack alignItems="flex-start">
 				<IconButton
 					aria-label={isExpanded ? 'Collapse' : 'Expand'}
 					fontSize="lg"
-					icon={<FiChevronDown aria-hidden />}
+					icon={isExpanded ? <FiChevronUp aria-hidden /> : <FiChevronDown aria-hidden />}
 					variant="ghost"
+					onClick={onExpandToggle}
 				/>
-				<Box width="full">
+				<Box verticalAlign="middle" width="full">
 					<QuestionMarkdown>{question}</QuestionMarkdown>
 				</Box>
 				<IconButton

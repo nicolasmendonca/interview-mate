@@ -1,11 +1,20 @@
-import React from 'react';
-import { Box, ChakraProps } from '@chakra-ui/react';
+import { chakra, Box } from '@chakra-ui/react';
 
-export const BoxWithPadding: React.FC<ChakraProps> = (props) => <Box p={6} {...props} />;
-export const SpacedRoundedBox: React.FC<ChakraProps> = (props) => (
-	<Box borderRadius={5} p={6} {...props} />
-);
+export const BoxWithPadding = chakra(Box, {
+	baseStyle: {
+		p: 6,
+	},
+});
 
-export const BoxWithMargin: React.FC<ChakraProps> = (props) => {
-	return <Box my={4} {...props} />;
-};
+export const SpacedRoundedBox = chakra(Box, {
+	baseStyle: {
+		borderRadius: 5,
+		p: 6,
+	},
+});
+
+export const BoxWithMargin = chakra(Box, {
+	baseStyle: {
+		my: 4,
+	},
+});
