@@ -12,13 +12,22 @@ export default {
 		question: 'Compare `useState` vs `useReducer`',
 		isExpanded: false,
 	},
-	argTypes: {
-		onAddToInterviewClick: { action: 'clicked' },
-		onExpandToggle: { action: 'clicked' },
-	},
 } as ComponentMeta<CatalogQuestionType>;
 
-const Template: ComponentStory<CatalogQuestionType> = (args) => <CatalogQuestion {...args} />;
+const Template: ComponentStory<CatalogQuestionType> = (args) => {
+	const [isExpanded, setIsExpanded] = React.useState<boolean>(args.isExpanded);
 
-export const Primary = Template.bind({});
-Primary.args = {};
+	React.useEffect(() => {
+		setIsExpanded(args.isExpanded);
+	}, [args.isExpanded, setIsExpanded]);
+
+	const onExpandToggle = () => {
+		args.onExpandToggle();
+		setIsExpanded(!isExpanded);
+	};
+
+	return <CatalogQuestion {...args} isExpanded={isExpanded} onExpandToggle={onExpandToggle} />;
+};
+
+export const basic = Template.bind({});
+basic.args = {};

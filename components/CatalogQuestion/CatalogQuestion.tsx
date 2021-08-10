@@ -1,9 +1,9 @@
 import React from 'react';
-import { Icon, IconButton, HStack, Box } from '@chakra-ui/react';
+import { Icon, IconButton, HStack, Box, Divider, useColorModeValue } from '@chakra-ui/react';
 import { FiChevronDown, FiChevronUp, FiPlus } from 'react-icons/fi';
 
 import { SpacedRoundedBox } from '../shared';
-import { QuestionMarkdown } from '../QuestionMarkdown';
+import { MarkdownRenderer } from '../MarkdownRenderer';
 
 export interface CatalogQuestionProps {
 	question: string;
@@ -18,15 +18,17 @@ export const CatalogQuestion: React.FC<CatalogQuestionProps> = ({
 	onExpandToggle,
 	isExpanded,
 }) => {
+	const cardBgColor = useColorModeValue('white', 'gray.800');
+
 	return (
 		<SpacedRoundedBox
-			bgColor="white"
+			bgColor={cardBgColor}
 			borderColor="blue.200"
 			borderStyle="dashed"
 			borderWidth={2}
 			boxShadow="lg"
 		>
-			<HStack alignItems="flex-start">
+			<HStack alignItems="center">
 				<IconButton
 					aria-label={isExpanded ? 'Collapse' : 'Expand'}
 					fontSize="lg"
@@ -34,18 +36,30 @@ export const CatalogQuestion: React.FC<CatalogQuestionProps> = ({
 					variant="ghost"
 					onClick={onExpandToggle}
 				/>
-				<Box verticalAlign="middle" width="full">
-					<QuestionMarkdown>{question}</QuestionMarkdown>
+				<Box width="full">
+					<MarkdownRenderer>{question}</MarkdownRenderer>
 				</Box>
 				<IconButton
 					aria-label="Add to interview"
-					color="gray.300"
+					colorScheme="purple"
 					fontSize="lg"
 					icon={<Icon aria-hidden as={FiPlus} />}
 					variant="ghost"
 					onClick={onAddToInterviewClick}
 				/>
 			</HStack>
+			{isExpanded && (
+				<Box>
+					<Divider pt={4} />
+					<Box py={4}>
+						<MarkdownRenderer>
+							{
+								'`useState` is used for single pieces of state. When there is a complex piece of state, its better to use `useReducer`'
+							}
+						</MarkdownRenderer>
+					</Box>
+				</Box>
+			)}
 		</SpacedRoundedBox>
 	);
 };

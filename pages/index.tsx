@@ -11,6 +11,7 @@ import {
 	HStack,
 	Icon,
 	IconButton,
+	useColorModeValue,
 	useTheme,
 } from '@chakra-ui/react';
 import { FiEdit } from 'react-icons/fi';
@@ -60,11 +61,13 @@ const interviewQuestions = [
 
 const InterviewMate: React.FC = () => {
 	const theme = useTheme();
+	const bgColor = useColorModeValue('bg', 'gray.800');
+	const secondaryBgColor = useColorModeValue(theme.colors.secondary, 'gray.900');
 
 	return (
-		<HStack bgColor="bg" className="InterviewMate" spacing={0}>
+		<HStack alignItems="flex-start" bgColor={bgColor} className="InterviewMate" spacing={0}>
 			<HalfSection
-				bgGradient={`linear-gradient(156.03deg, ${theme.colors.brand} 13.07%, ${theme.colors.secondary} 100%);`}
+				bgGradient={`linear-gradient(156.03deg, ${theme.colors.brand} 13.07%, ${secondaryBgColor} 100%);`}
 			>
 				<BoxWithPadding minWidth="container.xs">
 					<BoxWithMargin mt={10}>
@@ -82,6 +85,7 @@ const InterviewMate: React.FC = () => {
 								isExpanded={catalogQuestion.isExpanded}
 								question={catalogQuestion.question}
 								onAddToInterviewClick={noop}
+								onExpandToggle={noop}
 							/>
 						</BoxWithMargin>
 					))}

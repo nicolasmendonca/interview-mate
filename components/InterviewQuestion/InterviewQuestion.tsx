@@ -8,12 +8,13 @@ import {
 	InputRightAddon,
 	Button,
 	Box,
+	useColorModeValue,
 } from '@chakra-ui/react';
 import { FiTrash } from 'react-icons/fi';
 import { GrDrag } from 'react-icons/gr';
 
 import { SpacedRoundedBox } from '../shared';
-import { QuestionMarkdown } from '../QuestionMarkdown';
+import { MarkdownRenderer } from '../MarkdownRenderer';
 
 type Score = number;
 
@@ -32,6 +33,8 @@ export const InterviewQuestion: React.FC<InterviewQuestionProps> = ({
 	onScoreSubmit,
 }) => {
 	const [localScore, setLocalScore] = React.useState(parseScore(score));
+	const cardBgColor = useColorModeValue('white', 'gray.800');
+	const dragIconColor = useColorModeValue('gray.700', 'gray.300');
 
 	React.useEffect(() => {
 		setLocalScore(parseScore(score));
@@ -48,20 +51,29 @@ export const InterviewQuestion: React.FC<InterviewQuestionProps> = ({
 
 	return (
 		<SpacedRoundedBox
-			bgColor="white"
+			bgColor={cardBgColor}
 			borderColor="blue.200"
 			borderStyle="dashed"
 			borderWidth={2}
 			boxShadow="lg"
 		>
 			<HStack>
-				<Icon aria-label="Sort" as={GrDrag} cursor="move" />
+				<Icon
+					__css={{
+						path: {
+							stroke: dragIconColor,
+						},
+					}}
+					aria-label="Sort"
+					as={GrDrag}
+					cursor="move"
+				/>
 				<Box width="full">
-					<QuestionMarkdown>{question}</QuestionMarkdown>
+					<MarkdownRenderer>{question}</MarkdownRenderer>
 				</Box>
 				<IconButton
 					aria-label="expand"
-					color="gray.300"
+					colorScheme="red"
 					fontSize="lg"
 					icon={<Icon aria-hidden as={FiTrash} />}
 					variant="ghost"
@@ -80,7 +92,7 @@ export const InterviewQuestion: React.FC<InterviewQuestionProps> = ({
 					/>
 					<InputRightAddon>%</InputRightAddon>
 				</InputGroup>
-				<Button bgColor="brand" colorScheme="purple">
+				<Button bgColor="brand" color="white" colorScheme="purple">
 					Set score
 				</Button>
 			</HStack>
