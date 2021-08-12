@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react';
 import {
 	Box,
@@ -15,11 +14,17 @@ import {
 	useTheme,
 } from '@chakra-ui/react';
 import { FiEdit } from 'react-icons/fi';
+import { GetStaticProps } from 'next';
 
-import { CatalogQuestion } from '../components/CatalogQuestion';
 import { InterviewQuestion } from '../components/InterviewQuestion';
 import { SearchQuestionCatalog } from '../components/SearchQuestionCatalog';
 import { BoxWithMargin, BoxWithPadding } from '../components/shared';
+import { getQuestionContents } from '../utils/mdxUtils';
+import {
+	CatalogQuestionAccordion,
+	CatalogQuestionAccordionItem,
+} from '../application/CatalogQuestionAccordion';
+import { CategoryModel } from '../domain/CategoryModel';
 
 const HalfSection = chakra(Box, {
 	baseStyle: {
@@ -29,28 +34,6 @@ const HalfSection = chakra(Box, {
 });
 
 const noop = () => {};
-const catalogQuestions = [
-	{
-		id: 1,
-		isExpanded: false,
-		question: ['```jsx', '<Component props={true} />', '```'].join('\n'),
-	},
-	{
-		id: 2,
-		isExpanded: false,
-		question: 'Compare `useState` vs `useReducer`',
-	},
-	{
-		id: 3,
-		isExpanded: false,
-		question: 'Compare `useState` vs `useReducer`',
-	},
-	{
-		id: 4,
-		isExpanded: false,
-		question: 'Compare `useState` vs `useReducer`',
-	},
-];
 
 const interviewQuestions = [
 	{ id: 1, question: 'Compare `useState` vs `useReducer`', score: null },
@@ -59,7 +42,11 @@ const interviewQuestions = [
 	{ id: 4, question: 'Compare `useState` vs `useReducer`', score: null },
 ];
 
-const InterviewMate: React.FC = () => {
+interface InterviewMateProps {
+	categories: CategoryModel[];
+}
+
+const InterviewMate: React.FC<InterviewMateProps> = ({ categories }) => {
 	const theme = useTheme();
 	const bgColor = useColorModeValue('bg', 'gray.800');
 	const secondaryBgColor = useColorModeValue(theme.colors.secondary, 'gray.900');
@@ -74,20 +61,26 @@ const InterviewMate: React.FC = () => {
 						<SearchQuestionCatalog />
 					</BoxWithMargin>
 
-					<BoxWithMargin mb={6} mt={12}>
-						<Heading as="h2" color="white">
-							React
-						</Heading>
-					</BoxWithMargin>
-					{catalogQuestions.map((catalogQuestion) => (
-						<BoxWithMargin key={catalogQuestion.id}>
-							<CatalogQuestion
-								isExpanded={catalogQuestion.isExpanded}
-								question={catalogQuestion.question}
-								onAddToInterviewClick={noop}
-								onExpandToggle={noop}
-							/>
-						</BoxWithMargin>
+					{categories.map(({ id, name, questions }) => (
+						<React.Fragment key={id}>
+							<BoxWithMargin mb={6} mt={12}>
+								<Heading as="h2" color="white">
+									{name}
+								</Heading>
+							</BoxWithMargin>
+							<CatalogQuestionAccordion>
+								{questions.map((catalogQuestion) => (
+									<BoxWithMargin key={catalogQuestion.id}>
+										<CatalogQuestionAccordionItem
+											help={catalogQuestion.help}
+											id={catalogQuestion.id}
+											question={catalogQuestion.question}
+											onAddToInterviewClick={noop}
+										/>
+									</BoxWithMargin>
+								))}
+							</CatalogQuestionAccordion>
+						</React.Fragment>
 					))}
 				</BoxWithPadding>
 			</HalfSection>
@@ -119,3 +112,29 @@ const InterviewMate: React.FC = () => {
 };
 
 export default InterviewMate;
+
+export const getStaticProps: GetStaticProps = async () => {
+	const questions = getQuestionContents();
+
+	const uniqueCategories = Array.from(
+		questions.reduce((set, question) => {
+			set.add(question.category);
+
+			return set;
+		}, new Set<string>())
+	);
+
+	const categories: CategoryModel[] = uniqueCategories.map((categoryName) => {
+		const categoryQuestions = questions.filter(({ category }) => category === categoryName);
+
+		return {
+			id: categoryName,
+			name: categoryName,
+			questions: categoryQuestions,
+		};
+	});
+
+	return {
+		props: { categories },
+	};
+};

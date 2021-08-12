@@ -1,6 +1,7 @@
 /* eslint-disable react/display-name */
 import React from 'react';
-import { Code as ChakraCode, Heading, Text } from '@chakra-ui/react';
+import remarkGfm from 'remark-gfm';
+import { Alert, AlertIcon, Code as ChakraCode, Heading, Text } from '@chakra-ui/react';
 import ReactMarkdown from 'react-markdown';
 
 export const Code: React.FC = ({ children }) => {
@@ -24,6 +25,12 @@ const defaultComponents: MarkdownComponentProps['components'] = {
 	h3: (props: any) => <Heading as="p" fontSize="lg" my={4} {...props} />,
 	h4: (props: any) => <Heading as="p" fontSize="md" my={4} {...props} />,
 	p: (props: any) => <Text {...props} />,
+	blockquote: ({ children, ...props }: any) => (
+		<Alert borderRadius={4} my={4} role={undefined} status="info" variant="subtle" {...props}>
+			<AlertIcon />
+			{children}
+		</Alert>
+	),
 	code: Code,
 };
 
@@ -32,6 +39,11 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 	components = {},
 }) => {
 	return (
-		<ReactMarkdown components={{ ...defaultComponents, ...components }}>{children}</ReactMarkdown>
+		<ReactMarkdown
+			components={{ ...defaultComponents, ...components }}
+			remarkPlugins={[remarkGfm as any]}
+		>
+			{children}
+		</ReactMarkdown>
 	);
 };

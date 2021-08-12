@@ -1,0 +1,7 @@
+- Both hooks are used to manage state on a React.component
+- `useState` can affect the state directly while useReducer affects it indirectly.
+- `useState` is used most commonly to hold individual pieces of state.
+- We opt to use `useReducer` usually to keep related states together (ex: data fetching), or the state management implies some complexity. In that case, we can test the reducer in isolation
+
+> Extra credits: State Reducer Pattern  
+> This is a `test`

@@ -7,6 +7,7 @@ import { MarkdownRenderer } from '../MarkdownRenderer';
 
 export interface CatalogQuestionProps {
 	question: string;
+	help?: string;
 	isExpanded: boolean;
 	onAddToInterviewClick: () => void;
 	onExpandToggle: () => void;
@@ -14,6 +15,7 @@ export interface CatalogQuestionProps {
 
 export const CatalogQuestion: React.FC<CatalogQuestionProps> = ({
 	question,
+	help,
 	onAddToInterviewClick,
 	onExpandToggle,
 	isExpanded,
@@ -51,12 +53,8 @@ export const CatalogQuestion: React.FC<CatalogQuestionProps> = ({
 			{isExpanded && (
 				<Box>
 					<Divider pt={4} />
-					<Box py={4}>
-						<MarkdownRenderer>
-							{
-								'`useState` is used for single pieces of state. When there is a complex piece of state, its better to use `useReducer`'
-							}
-						</MarkdownRenderer>
+					<Box px={6} py={4}>
+						<MarkdownRenderer>{help}</MarkdownRenderer>
 					</Box>
 				</Box>
 			)}
