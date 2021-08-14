@@ -20,6 +20,7 @@ export const CatalogQuestion: React.FC<CatalogQuestionProps> = ({
 	onExpandToggle,
 	isExpanded,
 }) => {
+	const isExpandible = Boolean(help);
 	const cardBgColor = useColorModeValue('white', 'gray.800');
 
 	return (
@@ -31,13 +32,17 @@ export const CatalogQuestion: React.FC<CatalogQuestionProps> = ({
 			boxShadow="lg"
 		>
 			<HStack alignItems="center">
-				<IconButton
-					aria-label={isExpanded ? 'Collapse' : 'Expand'}
-					fontSize="lg"
-					icon={isExpanded ? <FiChevronUp aria-hidden /> : <FiChevronDown aria-hidden />}
-					variant="ghost"
-					onClick={onExpandToggle}
-				/>
+				{isExpandible ? (
+					<IconButton
+						aria-label={isExpanded ? 'Collapse' : 'Expand'}
+						fontSize="lg"
+						icon={isExpanded ? <FiChevronUp aria-hidden /> : <FiChevronDown aria-hidden />}
+						variant="ghost"
+						onClick={onExpandToggle}
+					/>
+				) : (
+					<Box px={5} py={4} />
+				)}
 				<Box width="full">
 					<MarkdownRenderer>{question}</MarkdownRenderer>
 				</Box>
@@ -50,7 +55,7 @@ export const CatalogQuestion: React.FC<CatalogQuestionProps> = ({
 					onClick={onAddToInterviewClick}
 				/>
 			</HStack>
-			{isExpanded && (
+			{isExpandible && isExpanded && (
 				<Box>
 					<Divider pt={4} />
 					<Box px={6} py={4}>

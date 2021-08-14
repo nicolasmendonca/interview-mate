@@ -28,8 +28,10 @@ import { CategoryModel } from '../domain/CategoryModel';
 
 const HalfSection = chakra(Box, {
 	baseStyle: {
-		minHeight: '100vh',
+		height: '100vh',
 		width: '50%',
+		px: 6,
+		overflowY: 'scroll',
 	},
 });
 
@@ -136,5 +138,6 @@ export const getStaticProps: GetStaticProps = async () => {
 
 	return {
 		props: { categories },
+		revalidate: 60 * 60 * 24,
 	};
 };

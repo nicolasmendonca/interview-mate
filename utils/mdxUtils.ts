@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
+import read from 'fs-readdir-recursive';
 import matter from 'gray-matter';
 
 import { QuestionId } from '../domain/QuestionModel';
@@ -15,9 +16,7 @@ export interface QuestionModel {
 	help?: string;
 }
 
-export const questionFilePaths = fs
-	.readdirSync(QUESTIONS_PATH)
-	.filter((path) => path.endsWith('.md'));
+export const questionFilePaths = read(QUESTIONS_PATH).filter((path) => path.endsWith('.md'));
 
 /**
  * matter(source) returns the following structure
@@ -34,7 +33,7 @@ export const getQuestionContents = (): QuestionModel[] => {
 
 		// eslint-disable-next-line no-console
 		const { content: question, data } = matter(source);
-		let help: string | undefined = undefined;
+		let help: string | null = null;
 
 		if (data.help) {
 			const helpSource = fs.readFileSync(path.join(HELP_PATH, data.help), 'utf8');
