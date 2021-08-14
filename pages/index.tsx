@@ -9,15 +9,16 @@ import {
 	HStack,
 	Icon,
 	IconButton,
+	useColorMode,
 	useColorModeValue,
 	useTheme,
 } from '@chakra-ui/react';
-import { FiEdit } from 'react-icons/fi';
+import { FiEdit, FiSun, FiMoon } from 'react-icons/fi';
 import { GetStaticProps } from 'next';
 
 import { InterviewQuestion } from '../components/InterviewQuestion';
 import { SearchQuestionCatalog } from '../components/SearchQuestionCatalog';
-import { CatalogQuestionSearch } from '../application/CatalogQuestionSearch';
+import { CatalogQuestionSearchProvider } from '../application/CatalogQuestionSearch';
 import { BoxWithMargin, BoxWithPadding } from '../components/shared';
 import { getQuestionContents } from '../utils/mdxUtils';
 import { CategoryModel } from '../domain/CategoryModel';
@@ -47,6 +48,7 @@ interface InterviewMateProps {
 
 const InterviewMate: React.FC<InterviewMateProps> = ({ categories }) => {
 	const theme = useTheme();
+	const { colorMode, toggleColorMode } = useColorMode();
 	const bgColor = useColorModeValue('bg', 'gray.800');
 	const secondaryBgColor = useColorModeValue(theme.colors.secondary, 'gray.900');
 
@@ -55,15 +57,22 @@ const InterviewMate: React.FC<InterviewMateProps> = ({ categories }) => {
 			<HalfSection
 				bgGradient={`linear-gradient(156.03deg, ${theme.colors.brand} 13.07%, ${secondaryBgColor} 100%);`}
 			>
-				<CatalogQuestionSearch categories={categories}>
+				<CatalogQuestionSearchProvider categories={categories}>
 					<BoxWithPadding minWidth="container.xs">
 						<BoxWithMargin mt={10}>
-							<SearchQuestionCatalog />
+							<HStack>
+								<SearchQuestionCatalog />
+								<IconButton
+									aria-label="Toggle color mode"
+									icon={colorMode === 'light' ? <FiSun /> : <FiMoon />}
+									onClick={toggleColorMode}
+								/>
+							</HStack>
 						</BoxWithMargin>
 
 						<CatalogQuestion />
 					</BoxWithPadding>
-				</CatalogQuestionSearch>
+				</CatalogQuestionSearchProvider>
 			</HalfSection>
 			<HalfSection>
 				<BoxWithPadding minWidth="container.xs">

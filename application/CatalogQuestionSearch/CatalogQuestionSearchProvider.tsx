@@ -5,11 +5,11 @@ import { CategoryModel } from '../../domain/CategoryModel';
 
 import { CatalogQuestionSearchContext } from './CatalogQuestionSearchContext';
 
-interface CatalogQuestionSearchProps {
+interface CatalogQuestionSearchProviderProps {
 	categories: CategoryModel[];
 }
 
-export const CatalogQuestionSearch: React.FC<CatalogQuestionSearchProps> = ({
+export const CatalogQuestionSearchProvider: React.FC<CatalogQuestionSearchProviderProps> = ({
 	children,
 	categories,
 }) => {
