@@ -3,17 +3,13 @@ import {
 	Box,
 	chakra,
 	Divider,
-	Editable,
-	EditableInput,
-	EditablePreview,
 	HStack,
-	Icon,
 	IconButton,
 	useColorMode,
 	useColorModeValue,
 	useTheme,
 } from '@chakra-ui/react';
-import { FiEdit, FiSun, FiMoon } from 'react-icons/fi';
+import { FiSun, FiMoon } from 'react-icons/fi';
 import { GetStaticProps } from 'next';
 
 import { InterviewQuestion } from '../components/InterviewQuestion';
@@ -23,6 +19,7 @@ import { BoxWithMargin, BoxWithPadding } from '../components/shared';
 import { getQuestionContents } from '../utils/mdxUtils';
 import { CategoryModel } from '../domain/CategoryModel';
 import { CatalogQuestion } from '../application/CatalogQuestion/CatalogQuestion';
+import { PositionName } from '../components/PositionName/PositionName';
 
 const HalfSection = chakra(Box, {
 	baseStyle: {
@@ -76,11 +73,7 @@ const InterviewMate: React.FC<InterviewMateProps> = ({ categories }) => {
 			</HalfSection>
 			<HalfSection>
 				<BoxWithPadding minWidth="container.xs">
-					<Editable defaultValue="React Mid. Developer" fontSize="4xl" fontWeight="bold">
-						<EditablePreview />
-						<EditableInput />
-						<IconButton aria-label="Edit" icon={<Icon aria-hidden as={FiEdit} />} ml={4} />
-					</Editable>
+					<PositionName editableProps={{ defaultValue: 'React Mid. Developer' }} />
 					<BoxWithMargin mb={12}>
 						<Divider />
 					</BoxWithMargin>
