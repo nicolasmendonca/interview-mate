@@ -4,7 +4,7 @@ import { QuestionId } from '../../domain/QuestionModel';
 
 import { QuestionCatalogExpandedStateContext } from './QuestionCatalogAccordionContext';
 
-export const CatalogQuestionAccordion: React.FC = ({ children }) => {
+export const CatalogQuestionAccordionProvider: React.FC = ({ children }) => {
 	const [expandedAccordions, setExpandedAccordions] = React.useState([]);
 
 	const isExpanded = (accordionId: QuestionId) => expandedAccordions.includes(accordionId);

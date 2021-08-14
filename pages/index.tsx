@@ -6,7 +6,6 @@ import {
 	Editable,
 	EditableInput,
 	EditablePreview,
-	Heading,
 	HStack,
 	Icon,
 	IconButton,
@@ -18,13 +17,11 @@ import { GetStaticProps } from 'next';
 
 import { InterviewQuestion } from '../components/InterviewQuestion';
 import { SearchQuestionCatalog } from '../components/SearchQuestionCatalog';
+import { CatalogQuestionSearch } from '../application/CatalogQuestionSearch';
 import { BoxWithMargin, BoxWithPadding } from '../components/shared';
 import { getQuestionContents } from '../utils/mdxUtils';
-import {
-	CatalogQuestionAccordion,
-	CatalogQuestionAccordionItem,
-} from '../application/CatalogQuestionAccordion';
 import { CategoryModel } from '../domain/CategoryModel';
+import { CatalogQuestion } from '../application/CatalogQuestion/CatalogQuestion';
 
 const HalfSection = chakra(Box, {
 	baseStyle: {
@@ -58,33 +55,15 @@ const InterviewMate: React.FC<InterviewMateProps> = ({ categories }) => {
 			<HalfSection
 				bgGradient={`linear-gradient(156.03deg, ${theme.colors.brand} 13.07%, ${secondaryBgColor} 100%);`}
 			>
-				<BoxWithPadding minWidth="container.xs">
-					<BoxWithMargin mt={10}>
-						<SearchQuestionCatalog />
-					</BoxWithMargin>
+				<CatalogQuestionSearch categories={categories}>
+					<BoxWithPadding minWidth="container.xs">
+						<BoxWithMargin mt={10}>
+							<SearchQuestionCatalog />
+						</BoxWithMargin>
 
-					{categories.map(({ id, name, questions }) => (
-						<React.Fragment key={id}>
-							<BoxWithMargin mb={6} mt={12}>
-								<Heading as="h2" color="white">
-									{name}
-								</Heading>
-							</BoxWithMargin>
-							<CatalogQuestionAccordion>
-								{questions.map((catalogQuestion) => (
-									<BoxWithMargin key={catalogQuestion.id}>
-										<CatalogQuestionAccordionItem
-											help={catalogQuestion.help}
-											id={catalogQuestion.id}
-											question={catalogQuestion.question}
-											onAddToInterviewClick={noop}
-										/>
-									</BoxWithMargin>
-								))}
-							</CatalogQuestionAccordion>
-						</React.Fragment>
-					))}
-				</BoxWithPadding>
+						<CatalogQuestion />
+					</BoxWithPadding>
+				</CatalogQuestionSearch>
 			</HalfSection>
 			<HalfSection>
 				<BoxWithPadding minWidth="container.xs">
