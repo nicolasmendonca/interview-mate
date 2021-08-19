@@ -7,13 +7,13 @@ import {
 	CatalogQuestionAccordionProvider,
 } from '../CatalogQuestionAccordion';
 import { BoxWithMargin } from '../../components/shared';
+import { useInterviewQuestionSheet } from '../InterviewQuestionSheet';
 
 interface ICatalogQuestionProps {}
 
-const noop = () => {};
-
 export const CatalogQuestion: React.FC<ICatalogQuestionProps> = () => {
 	const { results: categories } = useCatalogQuestionSearch();
+	const { hasQuestion, addQuestion } = useInterviewQuestionSheet();
 
 	return (
 		<CatalogQuestionAccordionProvider>
@@ -24,16 +24,25 @@ export const CatalogQuestion: React.FC<ICatalogQuestionProps> = () => {
 							{name}
 						</Heading>
 					</BoxWithMargin>
-					{questions.map((catalogQuestion) => (
-						<BoxWithMargin key={catalogQuestion.id}>
-							<CatalogQuestionAccordionItem
-								help={catalogQuestion.help}
-								id={catalogQuestion.id}
-								question={catalogQuestion.question}
-								onAddToInterviewClick={noop}
-							/>
-						</BoxWithMargin>
-					))}
+					{questions
+						.filter((question) => !hasQuestion(question.id))
+						.map((catalogQuestion) => (
+							<BoxWithMargin key={catalogQuestion.id}>
+								<CatalogQuestionAccordionItem
+									help={catalogQuestion.help}
+									id={catalogQuestion.id}
+									question={catalogQuestion.question}
+									onAddToInterviewClick={() =>
+										addQuestion({
+											id: catalogQuestion.id,
+											question: catalogQuestion.question,
+											help: catalogQuestion.help,
+											score: 0,
+										})
+									}
+								/>
+							</BoxWithMargin>
+						))}
 				</React.Fragment>
 			))}
 		</CatalogQuestionAccordionProvider>

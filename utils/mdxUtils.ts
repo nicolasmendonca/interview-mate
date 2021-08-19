@@ -9,7 +9,7 @@ import { QuestionId } from '../domain/QuestionModel';
 export const QUESTIONS_PATH = path.join(process.cwd(), 'content/questions');
 export const HELP_PATH = path.join(process.cwd(), 'content/help');
 
-export interface QuestionModel {
+export interface QuestionCatalogModel {
 	id: QuestionId;
 	question: string;
 	category: string;
@@ -27,7 +27,7 @@ export const questionFilePaths = read(QUESTIONS_PATH).filter((path) => path.ends
  *   excerpt: ''
  * }
  */
-export const getQuestionContents = (): QuestionModel[] => {
+export const getQuestionContents = (): QuestionCatalogModel[] => {
 	return questionFilePaths.map((questionMdFilePath, i) => {
 		const source = fs.readFileSync(path.join(QUESTIONS_PATH, questionMdFilePath), 'utf8');
 
