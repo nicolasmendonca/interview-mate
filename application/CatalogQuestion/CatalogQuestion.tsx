@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heading } from '@chakra-ui/react';
+import { Center, Heading, useColorModeValue } from '@chakra-ui/react';
 
 import { useCatalogQuestionSearch } from '../CatalogQuestionSearch';
 import {
@@ -14,9 +14,23 @@ interface ICatalogQuestionProps {}
 export const CatalogQuestion: React.FC<ICatalogQuestionProps> = () => {
 	const { results: categories } = useCatalogQuestionSearch();
 	const { hasQuestion, addQuestion } = useInterviewQuestionSheet();
+	const noResultsFoundColor = useColorModeValue('white', 'black');
 
 	return (
 		<CatalogQuestionAccordionProvider>
+			{categories.length === 0 && (
+				<Center
+					border={`1px solid ${noResultsFoundColor}`}
+					borderRadius="md"
+					color={noResultsFoundColor}
+					fontSize={24}
+					fontWeight="600"
+					mt={24}
+					py={16}
+				>
+					No results found
+				</Center>
+			)}
 			{categories.map(({ id, name, questions }) => (
 				<React.Fragment key={id}>
 					<BoxWithMargin mb={6} mt={12}>
@@ -34,9 +48,9 @@ export const CatalogQuestion: React.FC<ICatalogQuestionProps> = () => {
 									question={catalogQuestion.question}
 									onAddToInterviewClick={() =>
 										addQuestion({
+											help: catalogQuestion.help,
 											id: catalogQuestion.id,
 											question: catalogQuestion.question,
-											help: catalogQuestion.help,
 											score: 0,
 										})
 									}

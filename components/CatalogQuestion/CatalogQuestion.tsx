@@ -21,7 +21,7 @@ export const CatalogQuestion: React.FC<CatalogQuestionProps> = ({
 	isExpanded,
 }) => {
 	const isExpandible = Boolean(help);
-	const cardBgColor = useColorModeValue('white', 'gray.800');
+	const cardBgColor = useColorModeValue('white', 'gray.700');
 
 	return (
 		<SpacedRoundedBox
@@ -43,7 +43,7 @@ export const CatalogQuestion: React.FC<CatalogQuestionProps> = ({
 				) : (
 					<Box px={5} py={4} />
 				)}
-				<Box width="full">
+				<Box fontWeight="600" width="full">
 					<MarkdownRenderer>{question}</MarkdownRenderer>
 				</Box>
 				<IconButton
