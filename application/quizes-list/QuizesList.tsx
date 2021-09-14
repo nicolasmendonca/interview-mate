@@ -3,8 +3,8 @@ import NextLink from 'next/link';
 import { Box, Text, HStack, Input, InputGroup, InputLeftElement, Link } from '@chakra-ui/react';
 import { FiSearch } from 'react-icons/fi';
 
-import { BoxWithPadding } from '../components/shared';
-import { QuizJson } from '../entities/Quiz';
+import { BoxWithPadding } from '../../components/shared';
+import { QuizJson } from '../../entities/Quiz';
 
 import { useQuizesList } from './useQuizesList';
 

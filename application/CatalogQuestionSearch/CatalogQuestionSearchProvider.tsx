@@ -1,12 +1,12 @@
 import React from 'react';
 import Fuse from 'fuse.js';
 
-import { CategoryModel } from '../../domain/CategoryModel';
+import { QuestionCategory } from '../../entities/QuestionCategory';
 
 import { CatalogQuestionSearchContext } from './CatalogQuestionSearchContext';
 
 interface CatalogQuestionSearchProviderProps {
-	categories: CategoryModel[];
+	categories: QuestionCategory[];
 }
 
 export const CatalogQuestionSearchProvider: React.FC<CatalogQuestionSearchProviderProps> = ({
@@ -37,11 +37,11 @@ export const CatalogQuestionSearchProvider: React.FC<CatalogQuestionSearchProvid
 		}));
 
 		return {
+			results: searchQuery === '' ? categories : results,
 			searchQuery,
 			setSearchQuery,
-			results: searchQuery === '' ? categories : results,
 		};
-	}, [setSearchQuery, searchQuery]);
+	}, [searchEngine, searchQuery, categories]);
 
 	return (
 		<CatalogQuestionSearchContext.Provider value={contextValue}>

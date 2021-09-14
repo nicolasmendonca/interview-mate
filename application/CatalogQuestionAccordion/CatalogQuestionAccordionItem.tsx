@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { CatalogQuestion, CatalogQuestionProps } from '../../components/CatalogQuestion';
-import { QuestionId } from '../../domain/QuestionModel';
+import { QuestionId } from '../../entities/Question';
 
 import { useExpandedAccordion } from './hooks';
 

@@ -1,4 +1,4 @@
-import { QuizJson } from '../entities/Quiz';
+import { QuizJson } from '../../entities/Quiz';
 
 interface QuizesListServices {
 	fetchQuizesListService(): Promise<QuizJson[]>;

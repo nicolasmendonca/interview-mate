@@ -2,11 +2,10 @@ import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import React from 'react';
 import { FiSearch } from 'react-icons/fi';
 
-import { useCatalogQuestionSearch } from '../../application/CatalogQuestionSearch';
-
-export const SearchQuestionCatalog: React.FC = ({}) => {
-	const { searchQuery, setSearchQuery } = useCatalogQuestionSearch();
-
+export const SearchQuestionCatalog: React.FC<{
+	query: string;
+	onQueryChange: (query: string) => void;
+}> = ({ query, onQueryChange }) => {
 	return (
 		<InputGroup>
 			<InputLeftElement pointerEvents="none">
@@ -15,9 +14,9 @@ export const SearchQuestionCatalog: React.FC = ({}) => {
 			<Input
 				color="white"
 				placeholder="Search questions..."
-				value={searchQuery}
+				value={query}
 				variant="flushed"
-				onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
+				onChange={(e: React.ChangeEvent<HTMLInputElement>) => onQueryChange(e.target.value)}
 			/>
 		</InputGroup>
 	);

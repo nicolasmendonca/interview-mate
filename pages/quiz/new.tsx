@@ -1,11 +1,10 @@
+/* eslint-disable no-console */
 import React from 'react';
 import {
 	Box,
 	Button,
 	chakra,
 	HStack,
-	IconButton,
-	useColorMode,
 	useColorModeValue,
 	useTheme,
 	Modal,
@@ -20,22 +19,20 @@ import {
 	FormControl,
 	FormLabel,
 } from '@chakra-ui/react';
-import { FiSun, FiMoon } from 'react-icons/fi';
 import { GetStaticProps } from 'next';
 import Creatable from 'react-select/creatable';
 
-import { SearchQuestionCatalog } from '../../components/SearchQuestionCatalog';
-import { CatalogQuestionSearchProvider } from '../../application/CatalogQuestionSearch';
-import { BoxWithMargin, BoxWithPadding } from '../../components/shared';
-import { getQuestionContents } from '../../utils/mdxUtils';
-import { CategoryId, CategoryModel } from '../../domain/CategoryModel';
-import { CatalogQuestion } from '../../application/CatalogQuestion/CatalogQuestion';
+import { BoxWithPadding } from '../../components/shared';
+import { CategoryId } from '../../domain/CategoryModel';
 import {
 	InterviewQuestionSheet,
 	InterviewQuestionSheetProvider,
 } from '../../application/InterviewQuestionSheet';
 import { QuizPositionName } from '../../domain/QuizModel';
 import { QuestionModel } from '../../domain/QuestionModel';
+import { QuestionsCatalog } from '../../application/questions-catalog/QuestionsCatalog';
+import { questionsCatalogInteractors } from '../../application/services';
+import { QuestionCategoryJson } from '../../entities/QuestionCategory';
 
 type Question = string;
 type Help = string;
@@ -52,15 +49,14 @@ const HalfSection = chakra(Box, {
 const CreatableSelect = chakra(Creatable);
 
 interface InterviewMateProps {
-	categories: CategoryModel[];
+	categoriesJson: QuestionCategoryJson[];
 	positionName: QuizPositionName;
 	interviewQuestions: QuestionModel;
 }
 
-const InterviewMate: React.FC<InterviewMateProps> = ({ categories }) => {
+const InterviewMate: React.FC<InterviewMateProps> = ({ categoriesJson }) => {
 	const theme = useTheme();
 	const newQuestionModal = useDisclosure();
-	const { colorMode, toggleColorMode } = useColorMode();
 	const bgColor = useColorModeValue('bg', 'gray.700');
 	const secondaryBgColor = useColorModeValue(theme.colors.secondary, 'gray.900');
 	const leftSectionWidth = 40; // %
@@ -77,25 +73,7 @@ const InterviewMate: React.FC<InterviewMateProps> = ({ categories }) => {
 					bgGradient={`linear-gradient(156.03deg, ${theme.colors.brand} 13.07%, ${secondaryBgColor} 100%);`}
 					width={['100%', `${leftSectionWidth}%`]}
 				>
-					<CatalogQuestionSearchProvider categories={categories}>
-						<BoxWithPadding minWidth="container.xs">
-							<BoxWithMargin mt={10}>
-								<HStack>
-									<SearchQuestionCatalog />
-									<IconButton
-										aria-label="Toggle color mode"
-										icon={colorMode === 'light' ? <FiSun /> : <FiMoon />}
-										onClick={toggleColorMode}
-									/>
-									<Button colorScheme="green" px={6} onClick={newQuestionModal.onOpen}>
-										Create new
-									</Button>
-								</HStack>
-							</BoxWithMargin>
-
-							<CatalogQuestion />
-						</BoxWithPadding>
-					</CatalogQuestionSearchProvider>
+					<QuestionsCatalog categoriesJson={categoriesJson} onCreateNewClick={console.warn} />
 				</HalfSection>
 				<HalfSection width={['100%', `${100 - leftSectionWidth}%`]}>
 					<BoxWithPadding minWidth="container.xs">
@@ -159,28 +137,10 @@ const InterviewMate: React.FC<InterviewMateProps> = ({ categories }) => {
 export default InterviewMate;
 
 export const getStaticProps: GetStaticProps = async () => {
-	const questions = getQuestionContents();
-
-	const uniqueCategories = Array.from(
-		questions.reduce((set, question) => {
-			set.add(question.category);
-
-			return set;
-		}, new Set<string>())
-	);
-
-	const categories: CategoryModel[] = uniqueCategories.map((categoryName) => {
-		const categoryQuestions = questions.filter(({ category }) => category === categoryName);
-
-		return {
-			id: categoryName,
-			name: categoryName,
-			questions: categoryQuestions,
-		};
-	});
+	const categoriesJson = await questionsCatalogInteractors.fetchQuestionsCatalog();
 
 	return {
-		props: { categories },
-		revalidate: 60 * 60 * 24,
+		props: { categoriesJson },
+		revalidate: 1,
 	};
 };

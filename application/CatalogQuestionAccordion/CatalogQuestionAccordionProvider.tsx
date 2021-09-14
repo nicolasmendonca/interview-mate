@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { QuestionId } from '../../domain/QuestionModel';
+import { QuestionId } from '../../entities/Question';
 
 import { QuestionCatalogExpandedStateContext } from './QuestionCatalogAccordionContext';
 

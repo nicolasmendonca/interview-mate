@@ -9,7 +9,7 @@ export type QuestionHelp = string;
 export interface QuestionJson {
 	id: Id;
 	help?: string;
-	text: string;
+	question: string;
 }
 
 export class Question {
@@ -17,7 +17,7 @@ export class Question {
 
 	constructor(public id: QuestionId, public help: QuestionHelp, public text?: QuestionText) {}
 
-	public static fromJSON({ id, text, help }: QuestionJson): Question {
+	public static fromJson({ id, question: text, help }: QuestionJson): Question {
 		return new Question(id, help, text);
 	}
 }

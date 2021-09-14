@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request';
 
-import { graphqlClient } from '../application/GraphqlClient';
-import { QuizJson } from '../entities/Quiz';
+import { graphqlClient } from '../../application/GraphqlClient';
+import { QuizJson } from '../../entities/Quiz';
 
 export const fetchQuizesListGraphqlService = async () => {
 	return (

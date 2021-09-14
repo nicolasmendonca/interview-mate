@@ -1,18 +1,19 @@
 import React from 'react';
 import { Center, Heading, useColorModeValue } from '@chakra-ui/react';
 
-import { useCatalogQuestionSearch } from '../CatalogQuestionSearch';
 import {
 	CatalogQuestionAccordionItem,
 	CatalogQuestionAccordionProvider,
 } from '../CatalogQuestionAccordion';
 import { BoxWithMargin } from '../../components/shared';
 import { useInterviewQuestionSheet } from '../InterviewQuestionSheet';
+import { QuestionCategory } from '../../entities/QuestionCategory';
 
-interface ICatalogQuestionProps {}
+interface ICatalogQuestionProps {
+	categories: QuestionCategory[];
+}
 
-export const CatalogQuestion: React.FC<ICatalogQuestionProps> = () => {
-	const { results: categories } = useCatalogQuestionSearch();
+export const CatalogQuestion: React.FC<ICatalogQuestionProps> = ({ categories }) => {
 	const { hasQuestion, addQuestion } = useInterviewQuestionSheet();
 	const noResultsFoundColor = useColorModeValue('white', 'black');
 
@@ -45,12 +46,12 @@ export const CatalogQuestion: React.FC<ICatalogQuestionProps> = () => {
 								<CatalogQuestionAccordionItem
 									help={catalogQuestion.help}
 									id={catalogQuestion.id}
-									question={catalogQuestion.question}
+									question={catalogQuestion.text}
 									onAddToInterviewClick={() =>
 										addQuestion({
 											help: catalogQuestion.help,
 											id: catalogQuestion.id,
-											question: catalogQuestion.question,
+											question: catalogQuestion.text,
 											score: 0,
 										})
 									}

@@ -4,7 +4,7 @@ import { GetServerSideProps } from 'next';
 
 import { quizesListInteractors } from '../application/services';
 import { QuizJson } from '../entities/Quiz';
-import { QuizesList } from '../quizes-list/QuizesList';
+import { QuizesList } from '../application/quizes-list/QuizesList';
 
 interface IDashboardProps {
 	quizesJson: QuizJson[];
